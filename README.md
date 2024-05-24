@@ -39,6 +39,7 @@ The following environment variables are used in the `docker-compose.yml` file:
     export DB_PASSWORD=<your-database-password>
     export DB_PORT=<your-database-port>
     ```
+    The SECRET_KEY has a default value in case you decide not to generate a new one. However, this is not encouraged as it is less secured.
     
     > **__NOTE__**: You can generate and copy a secret key(`SECRET_KEY`) for the django app by opening a django shell `python manage.py shell` and running;
 
@@ -69,3 +70,8 @@ The project is setup with 3 log files which are located in the root directory of
 - api.log: All the logs of API calls made can be found here.
 - debug.log: For debug level bulogs.gs
 - info.log: for info level logs.
+
+### TODO
+- Unittest
+- Throttling
+- Deployment
