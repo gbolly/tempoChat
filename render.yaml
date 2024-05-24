@@ -6,27 +6,24 @@ services:
     branch: main
     dockerfilePath: ./Dockerfile
     envVars:
-      - key: DATABASE_URL
+      - key: DB_PASSWORD
         fromService:
           name: tempoChat-db
           property: connectionString
-      - key: REDIS_URL
+      - key: DB_PORT
         fromService:
-          name: tempoChat-redis
+          name: tempoChat-db
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
 
 databases:
-  - type: postgres
-    name: tempoChat-db
+  - name: tempoChat-db
     plan: free
-    properties:
-      databaseName: tempodb
-      user: tempoai
-      password:
+    databaseName: tempodb
+    user: tempoai
 
-service:
+services:
   - type: redis
     name: tempoChat-redis
     plan: free
