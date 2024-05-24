@@ -1,10 +1,98 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins");
 body {
-    background-color: pink;
+    font-family: 'Poppins' !important;
 }
 .auth-form {
+    padding: 50px 0;
+    max-width: 600px;
+    margin: auto;
+    padding: 50px 70px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+}
+.auth-form .form {
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+}
+.auth-form .login-btn {
     text-align: center;
 }
 .auth-form .btn {
     width: 50%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.login-btn .btn {
+    background-color: #f5455c;
+    border-color: #f5455c;
+    text-transform: uppercase;
+    color: #fff;
+}
+.login-btn .btn:hover {
+    background-color: black;
+    border-color: black;
+    text-transform: uppercase;
+    color: #fff;
+}
+.auth-form .signup-link {
+    text-align: center;
+}
+.start-chat {
+    color: #fff !important;
+    text-transform: capitalize !important;
+}
+.room-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 85vh;
+    width: 55%;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 20px;
+}
+#chat-log {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+#chat-message-input {
+    width: calc(100% - 110px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    box-sizing: border-box;
+}
+#chat-message-submit {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f5455c;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+#chat-message-submit:hover {
+    background-color: #000;
+}
+.message-sent {
+    text-align: right;
+    margin-bottom: 5px;
+    color: #fff;
+    background-color: #007bff;
+    padding: 8px 12px;
+    border-radius: 10px;
+    clear: both;
+}
+.message-received {
+    text-align: left;
+    margin-bottom: 5px;
+    color: #000;
+    background-color: #f2f2f2;
+    padding: 8px 12px;
+    border-radius: 10px;
+    clear: both;
 }

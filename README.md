@@ -36,6 +36,7 @@ The following environment variables are used in the `docker-compose.yml` file:
 
     ```bash
     export SECRET_KEY=<your-secret-key>
+    export DJANGO_SETTINGS_MODULE="tempoChat.settings"
     ```
     The SECRET_KEY has a default value in case you decide not to generate a new one. However, this is not encouraged as it is less secured.
     
@@ -45,6 +46,11 @@ The following environment variables are used in the `docker-compose.yml` file:
     from django.core.management.utils import get_random_secret_key  
     get_random_secret_key()
     ```
+    if you get a permission denied build.sh, make it executable on your local by running;
+    ```bash
+    chmod +x build.sh
+    ```
+    Then rebuild the docker image.
 
 ## Usage
 

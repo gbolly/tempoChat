@@ -19,7 +19,8 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       REDIS_HOST: redis
-    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+      DJANGO_SETTINGS_MODULE: tempoChat.settings
+    command: ["./build.sh", "gunicorn", "tempoChat.asgi:application", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
 
   db:
     image: postgres:13
