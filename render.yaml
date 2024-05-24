@@ -6,19 +6,16 @@ services:
     branch: main
     dockerfilePath: ./Dockerfile
     envVars:
-      - key: DB_PASSWORD
-        fromService:
-          name: tempoChat-db
-          property: connectionString
-      - key: DB_PORT
-        fromService:
-          name: tempoChat-db
+      - key: DATABASE_URL
+        fromDatabase:
+          name: spree-db
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
   - type: redis
     name: tempoChat-redis
     plan: free
+    ipAllowList: []
 
 databases:
   - name: tempoChat-db
