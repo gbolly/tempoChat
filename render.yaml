@@ -1,22 +1,32 @@
-databases:
-  - name: tempochatdb
-    plan: free
-    databaseName: tempodb
-    user: tempoai
-
 services:
   - type: web
-    plan: free
     name: tempoChat
-    runtime: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: "python -m gunicorn tempoChat.asgi:application -k uvicorn.workers.UvicornWorker"
+    env: docker
+    repo: https://github.com/gbolly/tempoChat.git
+    branch: main
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: tempochatdb
+        fromService:
+          name: tempoChat-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: tempoChat-redis
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
-      - key: WEB_CONCURRENCY
-        value: 4
+
+databases:
+  - type: postgres
+    name: tempoChat-db
+    plan: free
+    properties:
+      databaseName: tempodb
+      user: tempoai
+      password:
+
+service:
+  - type: redis
+    name: tempoChat-redis
+    plan: free
