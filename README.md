@@ -36,7 +36,10 @@ The following environment variables are used in the `docker-compose.yml` file:
 
     ```bash
     export SECRET_KEY=<your-secret-key>
+    export DB_NAME=<your-database-name>
+    export DB_USER=<your-database-user>
     export DB_PASSWORD=<your-database-password>
+    export DB_HOST=<your-database-host>
     export DB_PORT=<your-database-port>
     ```
     The SECRET_KEY has a default value in case you decide not to generate a new one. However, this is not encouraged as it is less secured.

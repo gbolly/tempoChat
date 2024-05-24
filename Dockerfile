@@ -10,4 +10,4 @@ EXPOSE 8000
 
 ENV PYTHONUNBUFFERED=1
 
-CMD ["gunicorn", "tempoChat.asgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "tempoChat.asgi:application", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]

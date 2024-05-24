@@ -16,14 +16,12 @@ services:
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
+  - type: redis
+    name: tempoChat-redis
+    plan: free
 
 databases:
   - name: tempoChat-db
     plan: free
     databaseName: tempodb
     user: tempoai
-
-services:
-  - type: redis
-    name: tempoChat-redis
-    plan: free
