@@ -88,7 +88,7 @@ CHANNEL_LAYERS = {
     },
 }
 
-REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}"
+REDIS_URL = os.environ.get("REDIS_URL", f"redis://{REDIS_HOST}:{REDIS_PORT}")
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

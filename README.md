@@ -91,5 +91,6 @@ Throttling implementation leverages Django cache to store message count for a us
 
 The client after receiving a 4001 code, also closes its socket and refreshes the page after 10 seconds to reconnect and start chatting again.
 
-### FIX
-- Deployment
+
+### Live
+Visit [tempochat](https://tempochat.onrender.com/chat/) to access the project or follow the docker setup steps to test locally.
