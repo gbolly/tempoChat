@@ -77,7 +77,7 @@
 
     function connectWebSocket() {
         const chatSocket = new WebSocket(
-            wsScheme + window.location.host + '/ws/chat/' + conversationId + '/'
+            wsScheme + '://' + window.location.host + '/ws/chat/' + conversationId + '/'
         );
         const messageInputDom = document.querySelector("#chat-message-input");
         const submitButton = document.querySelector("#chat-message-submit");
