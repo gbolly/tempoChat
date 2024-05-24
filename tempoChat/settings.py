@@ -89,6 +89,7 @@ CHANNEL_LAYERS = {
 }
 
 REDIS_URL = os.environ.get("REDIS_URL", f"redis://{REDIS_HOST}:{REDIS_PORT}")
+WS_SCHEME = os.environ.get("WS_SCHEME", "ws")
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

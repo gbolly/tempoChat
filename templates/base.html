@@ -72,11 +72,12 @@
 <script>
     const conversationId = "{{ conversation.id }}";
     const username = "{{ user.username }}";
+    const wsScheme = "{{ ws_scheme }}";
     let chatSocket;
 
     function connectWebSocket() {
         const chatSocket = new WebSocket(
-            'ws://' + window.location.host + '/ws/chat/' + conversationId + '/'
+            wsScheme + window.location.host + '/ws/chat/' + conversationId + '/'
         );
         const messageInputDom = document.querySelector("#chat-message-input");
         const submitButton = document.querySelector("#chat-message-submit");

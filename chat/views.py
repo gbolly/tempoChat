@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -46,8 +47,12 @@ def chat_room(request, conversation_id):
     api_logger.info(f"HTTP {request.method} {request.path}")
     try:
         conversation = Conversation.objects.get(id=conversation_id)
+        ws_scheme = settings.WS_SCHEME
         logger.info(f'User {request.user.username} accessing chat room {conversation_id}')
-        return render(request, "room.html", {"conversation": conversation, "user": request.user})
+        return render(request, "room.html", {"conversation": conversation,
+                                             "user": request.user,
+                                             "ws_scheme": ws_scheme
+                                             })
     except Exception as e:
         logger.error(f'Error accessing chat room {conversation_id} for user {request.user.username}: {e}')
         return render(request, 'chat/error.html', {'error': 'Could not access chat room'})
