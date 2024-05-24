@@ -1,8 +1,13 @@
 import json
 import logging
 import redis
-from channels.generic.websocket import AsyncWebsocketConsumer
+from time import sleep
+from datetime import datetime, timedelta
+
 from django.conf import settings
+from django.core.cache import cache
+
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 
 logger = logging.getLogger("chat")
@@ -38,6 +43,25 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data):
+        user_cache_key = f"user_{self.user.id}_chat_throttle"
+        current_time = datetime.now()
+        last_access_time = cache.get(user_cache_key)
+        message_count = cache.get(f"{user_cache_key}_count", 0)
+
+        if last_access_time and current_time - last_access_time < timedelta(minutes=1):
+            if message_count >= 10:
+                cache.set(f"{user_cache_key}_count", 0, timeout=60)
+                cache.set(user_cache_key, current_time, timeout=60)
+                await self.send(text_data=json.dumps({
+                    "message": "Messsage limit reached. Retry after 10 seconds.",
+                    "username": "Connection closed"
+                }))
+                await self.close(code=4001)
+                return
+
+        cache.set(user_cache_key, current_time, timeout=60)
+        cache.set(f"{user_cache_key}_count", message_count + 1, timeout=60)
+
         data = json.loads(text_data)
         message = data["message"]
         username = self.user.username

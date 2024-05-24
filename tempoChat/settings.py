@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY",
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["tempochat.onrender.com"]
+ALLOWED_HOSTS = ["tempochat.onrender.com", "127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -77,17 +77,17 @@ TEMPLATES = [
 WSGI_APPLICATION = "tempoChat.wsgi.application"
 ASGI_APPLICATION = "tempoChat.asgi.application"
 
+REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
+REDIS_PORT = 6379
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("localhost", 6379)],
+            "hosts": [(REDIS_HOST, 6379)],
         },
     },
 }
 
-REDIS_HOST = "localhost"
-REDIS_PORT = 6379
 REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}"
 
 # Database

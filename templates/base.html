@@ -70,9 +70,11 @@
 {% endblock %}
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const conversationId = "{{ conversation.id }}";
-        const username = "{{ user.username }}";
+    const conversationId = "{{ conversation.id }}";
+    const username = "{{ user.username }}";
+    let chatSocket;
+
+    function connectWebSocket() {
         const chatSocket = new WebSocket(
             'ws://' + window.location.host + '/ws/chat/' + conversationId + '/'
         );
@@ -102,11 +104,16 @@
         };
 
         chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
+            if (e.code === 4001) {
+                console.error("Chat socket closed due to throttling. Reconnecting in 10 seconds...");
+                setTimeout(function(e) {location.reload();}, 10000);
+            } else {
+                console.error("Chat socket closed unexpectedly.");
+            }
         };
 
         messageInputDom.focus();
-        messageInputDom.addEventListener('keyup', function(e) {
+        messageInputDom.addEventListener("keyup", function(e) {
             if (e.keyCode === 13) {
                 submitButton.click();
                 messageDiv.scrollTop = messageDiv.scrollHeight;
@@ -120,9 +127,9 @@
                 "message": message
             }));
             messageInputDom.value = "";
-            submitButton.disabled = true;
         };
-    });
+    };
+    connectWebSocket();
 </script>
 
 </html>

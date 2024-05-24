@@ -36,11 +36,6 @@ The following environment variables are used in the `docker-compose.yml` file:
 
     ```bash
     export SECRET_KEY=<your-secret-key>
-    export DB_NAME=<your-database-name>
-    export DB_USER=<your-database-user>
-    export DB_PASSWORD=<your-database-password>
-    export DB_HOST=<your-database-host>
-    export DB_PORT=<your-database-port>
     ```
     The SECRET_KEY has a default value in case you decide not to generate a new one. However, this is not encouraged as it is less secured.
     
@@ -74,7 +69,21 @@ The project is setup with 3 log files which are located in the root directory of
 - debug.log: For debug level bulogs.gs
 - info.log: for info level logs.
 
-### TODO
-- Unittest
-- Throttling
+### Test
+To run unit test, run;
+
+```bash
+python manage.py test
+```
+
+### API Throttling
+Rate limits occurs at 10calls/min. The server then gets disconnected when this happens.
+You will have to wait 10 seconds for the connection to come up.
+
+#### Implemention Details
+Throttling implementation leverages Django cache to store message count for a user. When a message is received, a check is done against the last time the cache was accessed. If it is less than a minute, the cached message count is then used to check if the use has sent up to 10 messages. When this is true, the channel is disconnected and a message is sent to the client.
+
+The client after receiving a 4001 code, also closes its socket and refreshes the page after 10 seconds to reconnect and start chatting again.
+
+### FIX
 - Deployment
