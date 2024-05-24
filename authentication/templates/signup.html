@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap5 %}
+
+{% block title %}
+    {% comment %} <h5 class="display-5 mb-5">Register</h5> {% endcomment %}
+{% endblock %}
+
+{% block content %}
+    <div class="auth-form">
+        <form method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+            {% bootstrap_form form layout="vertical" %}
+            {% comment %} {{ form.as_p }} {% endcomment %}
+            <div class="login-btn">
+                {% buttons submit='signup &raquo;' %}{% endbuttons %}
+            </div>
+        </form>
+        <p class="signup-link">Already have an account? <span><a href={% url "login" %}>Login</a></span></p>
+    </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ conversation }}
+    <div>
+        <a href="{% url 'home' %}" type="button" class="btn btn-link text-center">Back to Chat list</a>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="room-container">
+        <div id="chat-log"></div>
+        <div class="d-inline-block">
+            <input id="chat-message-input" type="text">
+            <button id="chat-message-submit">Send</button>
+        </div>
+    </div>
+{% endblock %}

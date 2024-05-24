@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block title %}
+   Welcome to the Tempo AI chat Room, {{ user.first_name }}!
+{% endblock %}
+
+{% block content %}
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
+        {% for user in users %}
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@{{ user.username }}</h5>
+                    <h5 class="card-title">{{ user.first_name }} {{ user.last_name}}</h5>
+                    <div class="login-btn">
+                        <a class="btn start-chat" href="{% url 'create-conversation' other_user_id=user.id %}">Start Chat</a>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {% with minutes_since_last_login=user|minutes_since_last_login %}
+                    {% if minutes_since_last_login is not None %}
+                        <small class="text-muted">Last seen {{ minutes_since_last_login }} mins ago</small>
+                        {% else %}
+                            <small class="text-muted">New user</small>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

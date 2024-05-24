@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tempo AI Chat</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+{% load bootstrap5 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% bootstrap_messages %}
+
+{% block bootstrap5_content %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">tempo.ai</a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div "collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav navbar-right me-auto mb-2 mb-lg-0 ">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Hello {{ user.username }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'logout' %}" class="form">
+                            {% csrf_token %}
+                            <div class="login-btn">
+                                <button type="submit" class="btn">
+                                    Logout
+                                </button>
+                            </div>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'signup' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</nav>
+<div class="container">
+    {% bootstrap_messages %}
+    <div class="mt-4">
+            
+        <h5 class="text-center">{% block title %}TempoAI{% endblock %}</h5>
+            
+        {% block content %}(no content){% endblock %}
+    </div>
+</div>
+
+{% endblock %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const conversationId = "{{ conversation.id }}";
+        const username = "{{ user.username }}";
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + conversationId + '/'
+        );
+        const messageInputDom = document.querySelector("#chat-message-input");
+        const submitButton = document.querySelector("#chat-message-submit");
+        const messageDiv = document.querySelector('#chat-log');
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+
+            if (data.messages) {
+                data.messages.forEach(function(msg) {
+                    if (msg.username === username) {
+                        messageDiv.innerHTML += ('<br/>' + '<p class=message-sent>' + msg.username + ': ' + msg.message + '</p>');
+                    } else {
+                        messageDiv.innerHTML += ('<br/>' + '<p class=message-received>' + msg.username + ': ' + msg.message + '</p>');
+                    }
+                });
+            } else {
+                if (data.username === username) {
+                    messageDiv.innerHTML += ('<br/>' + '<p class=message-sent>' + data.username + ': ' + data.message + '</p>');
+                } else {
+                    messageDiv.innerHTML += ('<br/>' + '<p class=message-received>' + data.username + ': ' + data.message + '</p>');
+                }
+            }
+            messageDiv.scrollTop = messageDiv.scrollHeight;
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        messageInputDom.focus();
+        messageInputDom.addEventListener('keyup', function(e) {
+            if (e.keyCode === 13) {
+                submitButton.click();
+                messageDiv.scrollTop = messageDiv.scrollHeight;
+            }
+        });
+
+        submitButton.onclick = function(e) {
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                "username": username,
+                "message": message
+            }));
+            messageInputDom.value = "";
+            submitButton.disabled = true;
+        };
+    });
+</script>
+
+</html>
