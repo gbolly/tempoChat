@@ -1,8 +1,8 @@
 databases:
   - name: tempochatdb
     plan: free
-    databaseName: postgres
-    user: postgres
+    databaseName: tempodb
+    user: tempoai
 
 services:
   - type: web
