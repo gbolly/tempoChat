@@ -1,0 +1,12 @@
+name: tempo_chat_test
+on: [pull_request, push]
+jobs:
+  test_project:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - run: pip install flake8
+      - run: pip install -r requirements.txt
+      - run: pytest .
+      - run: flake8 . --max-complexity=10 --max-line-length=127 exclude=.git,__pycache__,*/migrations/*

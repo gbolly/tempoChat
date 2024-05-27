@@ -1,7 +1,6 @@
 import json
 import logging
 import redis
-from time import sleep
 from datetime import datetime, timedelta
 
 from django.conf import settings
